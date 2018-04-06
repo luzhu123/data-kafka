@@ -1,0 +1,91 @@
+spring:
+  application:
+    name: micro-datakafka
+  profiles:
+    active: ${profile.active},kafka
+  cloud:
+    zookeeper:
+      connectString: testzk1.shishike.com:2181,testzk2.shishike.com:2181,testzk3.shishike.com:2181
+      enabled: true
+      config:
+        enabled: true
+        root: /configurations/on_fintech/${profile.active}
+        defaultContext: apps
+        profileSeparator: ':'
+
+
+server:
+  port: 8691
+  context-path: /datakafka
+
+info:
+  active: ${profile.active}
+
+endpoints:
+  enabled: false
+  info:
+    enabled: true
+  health:
+    enabled: true
+  metrics:
+    enabled: true
+
+
+hystrix:
+  threadpool:
+    default:
+      coreSize: 50
+      maxQueueSize: 100
+      queueSizeRejectionThreshold: 100
+
+hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds: 60000
+
+
+---
+spring:
+  profiles: dev
+  cloud:
+    zookeeper:
+      connectString: testzk1.shishike.com:2181,testzk2.shishike.com:2181,testzk3.shishike.com:2181
+
+---
+spring:
+  profiles: test
+  cloud:
+    zookeeper:
+      connectString: testzk1.shishike.com:2181,testzk2.shishike.com:2181,testzk3.shishike.com:2181
+
+---
+spring:
+  profiles: citest
+  cloud:
+    zookeeper:
+      connectString: testzk1.shishike.com:2181,testzk2.shishike.com:2181,testzk3.shishike.com:2181
+
+---
+spring:
+  profiles: loadtest
+  cloud:
+    zookeeper:
+      connectString: 172.16.31.67:2181,172.16.31.68:2181,172.16.31.69:2181
+
+---
+spring:
+  profiles: gld
+  cloud:
+    zookeeper:
+      connectString: gld.zk1.cnhz.keruyun.com:2181,gld.zk2.cnhz.keruyun.com:2181,gld.zk3.cnhz.keruyun.com:2181
+
+---
+spring:
+  profiles: prod
+  cloud:
+    zookeeper:
+      connectString: zk1.keruyun.com:2181,zk2.keruyun.com:2181,zk3.keruyun.com:2181,zk4.keruyun.com:2181,zk5.keruyun.com:2181
+
+---
+spring:
+  profiles: vpcprod
+  cloud:
+    zookeeper:
+      connectString: vpcprod.zk1.cnhz.keruyun.com:2181,vpcprod.zk2.cnhz.keruyun.com:2181,vpcprod.zk3.cnhz.keruyun.com:2181,vpcprod.zk4.cnhz.keruyun.com:2181,vpcprod.zk5.cnhz.keruyun.com:2181

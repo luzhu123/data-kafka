@@ -1,0 +1,61 @@
+#
+#eureka:
+#  instance:
+##    hostname:${vcap.application.uris[0]}
+##    nonSecurePort: 80
+#    appname: ${spring.application.name:unknown}
+#    preferIpAddress: true
+#    leaseRenewalIntervalInSeconds: 10
+#    statusPageUrlPath: /info
+#    healthCheckUrlPath: /health
+#    metadataMap:
+#      instanceId: ${spring.application.name}:${spring.application.instance_id:${server.port}}
+#
+#  client:
+#    healthcheck:
+#      enabled: true
+#    registerWithEureka: true
+#    fetchRegistry: true
+#    region: ali-hz-1
+#    serviceUrl:
+#      defaultZone: http://dev.discovery.shishike.com/eureka/
+
+info:
+  version: ${project.version}
+  artifactId: ${project.artifactId}
+  appName: ${spring.application.name}
+
+#
+#logging:
+#    level:
+#        tk.mybatis: DEBUG
+spring:
+  cloud:
+    inetutils:
+      ignoredInterfaces:
+        - docker*
+        - veth.*
+        - utun*
+        - vmnet*
+# 国际化配置
+  messages:
+    always-use-message-format: false # Set whether to always apply the MessageFormat rules, parsing even messages.properties.properties without arguments.
+    basename: messages # Comma-separated list of basenames, each following the ResourceBundle convention.
+    cache-seconds: -1 # Loaded resource bundle files cache expiration, in seconds. When set to -1, bundles are cached forever.
+    encoding: UTF-8 # Message bundles encoding.
+    fallback-to-system-locale: true
+
+mybatis:
+  conf:
+    entityPath: com.keruyun.fintech.datakafkaa.*.entity
+
+#jackson
+  jackson:
+    default-property-inclusion: non_null # Controls the inclusion of properties during serialization.
+    deserialization.fail_on_unknown_properties: false # Jackson on/off features that affect the way Java objects are deserialized.
+# 文件上传配置
+  http:
+    multipart:
+      maxFileSize: 50MB
+      maxRequestSize: 50MB
+

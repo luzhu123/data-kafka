@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <bean id="crosFilter" class="com.keruyun.fintech.commons.web.CrosFilter"/>
+    <!--
+-->
+
+    <bean id="servletFilter" class="com.keruyun.fintech.commons.web.ServletFilter"/>
+
+    <!-- 使用annotation 自动注册bean -->
+    <context:component-scan base-package="com.keruyun.fintech"/>
+
+    <bean id="transactionMethodInterceptor" class="com.keruyun.fintech.commons.configuration.jdbc.TransactionMethodInterceptor"/>
+
+    <bean id="transactionMethodInterceptorPointcut" class="org.springframework.aop.support.JdkRegexpMethodPointcut"
+          scope="prototype">
+        <property name="patterns">
+            <array>
+                <value>.*Service.*</value>
+            </array>
+        </property>
+    </bean>
+
+    <aop:config proxy-target-class="true">
+        <aop:advisor advice-ref="transactionMethodInterceptor" pointcut-ref="transactionMethodInterceptorPointcut"/>
+    </aop:config>
+
+    <!--<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"/>-->
+    <bean id="monitoringAdvisor" class="net.bull.javamelody.MonitoringSpringAdvisor">
+        <property name="pointcut">
+            <bean class="net.bull.javamelody.MonitoredWithAnnotationPointcut"/>
+        </property>
+    </bean>
+</beans>

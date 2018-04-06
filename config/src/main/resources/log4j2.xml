@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <properties>
+        <property name="LOG_HOME">./logs/</property>
+        <property name="INFO_FILE_NAME">info</property>
+        <property name="DEBUG_FILE_NAME">debug</property>
+        <property name="ERROR_FILE_NAME">error</property>
+        <property name="REQ_RES_NAME">req</property>
+        <property name="ASYNC_QUEUE_ERROR_FILENAME">async_error</property>
+        <property name="SLOW_SQL_FILE_NAME">slow_sql</property>
+        <property name="LOG_FILE_PATTERN">%d{yyyy-MM-dd.HH:mm:ss.SSS} %X{IP} %p %t@%X{_KRY_GLOBAL_MSG_ID} %X{URL} %c.%M(%L) : %m%n</property>
+    </properties>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${LOG_FILE_PATTERN}"/>
+        </Console>
+
+        <RollingRandomAccessFile name="INFO" fileName="${LOG_HOME}/${INFO_FILE_NAME}.log"
+                                 filePattern="${LOG_HOME}/$${date:yyyyMM}/${INFO_FILE_NAME}_%d{yyyyMMdd}.log">
+            <!--<Filters>-->
+                <!--<ThresholdFilter level="WARN" onMatch="DENY" onMismatch="NEUTRAL"/>-->
+                <!--<ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>-->
+            <!--</Filters>-->
+            <PatternLayout pattern="${LOG_FILE_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingRandomAccessFile>
+        <!--<RollingRandomAccessFile name="DEBUG" fileName="${LOG_HOME}/${DEBUG_FILE_NAME}.log"-->
+                                 <!--filePattern="${LOG_HOME}/$${date:yyyyMM}/${DEBUG_FILE_NAME}_%d{yyyyMMdd}.log">-->
+            <!--<Filters>-->
+                <!--<ThresholdFilter level="INFO" onMatch="DENY" onMismatch="NEUTRAL"/>-->
+                <!--<ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="NEUTRAL"/>-->
+            <!--</Filters>-->
+            <!--<PatternLayout pattern="${LOG_FILE_PATTERN}"/>-->
+            <!--<Policies>-->
+                <!--<TimeBasedTriggeringPolicy interval="1" modulate="true"/>-->
+            <!--</Policies>-->
+        <!--</RollingRandomAccessFile>-->
+        <RollingRandomAccessFile name="ERROR" fileName="${LOG_HOME}/${ERROR_FILE_NAME}.log"
+                                 filePattern="${LOG_HOME}/$${date:yyyyMM}/${ERROR_FILE_NAME}_%d{yyyyMMdd}.log">
+            <Filters>
+                <ThresholdFilter level="WARN" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <PatternLayout pattern="${LOG_FILE_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingRandomAccessFile>
+        <RollingRandomAccessFile name="SLOW_SQL" fileName="${LOG_HOME}/${SLOW_SQL_FILE_NAME}.log"
+                                 filePattern="${LOG_HOME}/$${date:yyyyMM}/${SLOW_SQL_FILE_NAME}_%d{yyyyMMdd}.log">
+            <PatternLayout pattern="${LOG_FILE_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingRandomAccessFile>
+        <!--
+        <RollingRandomAccessFile name="REQUEST" fileName="${LOG_HOME}/${REQ_RES_NAME}.log"
+                                 filePattern="${LOG_HOME}/$${date:yyyyMM}/${REQ_RES_NAME}.%d{yyyyMMdd}.log">
+            <PatternLayout pattern="${LOG_FILE_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingRandomAccessFile>
+        <RollingRandomAccessFile name="ASYNC_QUEUE_ERROR" fileName="${LOG_HOME}/${ASYNC_QUEUE_ERROR_FILENAME}.log"
+                                 filePattern="${LOG_HOME}/$${date:yyyyMM}/${ASYNC_QUEUE_ERROR_FILENAME}.%d{yyyyMMdd}.log">
+            <PatternLayout pattern="${LOG_FILE_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+
+            </Policies>
+        </RollingRandomAccessFile>
+        -->
+    </Appenders>
+
+    <Loggers>
+        <!--<Logger name="Request" additivity="false" level="info">-->
+            <!--<AppenderRef ref="REQUEST"/>-->
+            <!--<AppenderRef ref="Console"/>-->
+        <!--</Logger>-->
+        <!--<Logger name="AsyncQueueError" additivity="false" level="info">-->
+            <!--<AppenderRef ref="ASYNC_QUEUE_ERROR"/>-->
+            <!--<AppenderRef ref="Console"/>-->
+        <!--</Logger>-->
+
+        <Logger name="com.alibaba.druid.filter.stat.StatFilter" additivity="false">
+            <AppenderRef ref="SLOW_SQL"/>
+            <AppenderRef ref="INFO"/>
+            <AppenderRef ref="Console"/>
+        </Logger>
+        <!--<Logger name="org.apache.kafka" level="${kafka.log.level}"/>-->
+        <!--<Logger name="org.hibernate.validator" level="INFO"/>-->
+        <!--<Logger name="org.springframework" level="INFO"/>-->
+        <!--<Logger name="org.apache" level="INFO"/>-->
+        <!--<Logger name="org.quartz" level="INFO"/>-->
+        <!--<Logger name="org.quartz-scheduler" level="INFO"/>-->
+        <!--<Logger name="java.sql" level="INFO"/>-->
+        <!--<Logger name="druid.sql" level="INFO"/>-->
+        <!--<Logger name="io.netty" level="INFO"/>-->
+        <!--<Logger name="net.bull.javamelody" level="INFO"/>-->
+        <!--<Logger name="net.rubyeye.xmemcached" level="INFO"/>-->
+        <!--<Logger name="com.alibaba.druid" level="INFO"/>-->
+        <!--<Logger name="com.google.code.yanf4j" level="INFO"/>-->
+        <Logger name="com.keruyun.fintech" level="DEBUG"/>
+        <Logger name="com.keruyun.fintech.commons" level="INFO"/>
+        <Logger name="com.keruyun.fintech.commons.configuration.jdbc" level="INFO"/>
+        <Logger name="com.keruyun.fintech.commons.async" level="INFO"/>
+
+        <Root level="INFO">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="INFO"/>
+            <!--<AppenderRef ref="DEBUG"/>-->
+            <AppenderRef ref="ERROR"/>
+        </Root>
+
+    </Loggers>
+</Configuration>

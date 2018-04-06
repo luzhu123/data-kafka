@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration scan="true" debug="false">
+
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <property name="LOG_PATH" value="./logs/"/>
+    <property name="LOG_FILE" value="info.log"/>
+    <property name="LOG_ERROR_FILE" value="error.log"/>
+    <property name="PARTNER_FILE" value="partner.log"/>
+    <property name="MVC_FILE" value="mvc.log"/>
+    <property name="TRANSF_FILE" value="transf.log"/>
+    <property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %X{IP} %level %thread@%X{_KRY_GLOBAL_MSG_ID} %X{URL} %logger[%method:%line] - %msg%n"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+    <include resource="org/springframework/boot/logging/logback/file-appender.xml"/>
+    <!--<root level="INFO">-->
+    <!--<appender-ref ref="CONSOLE"/>-->
+    <!--<appender-ref ref="FILE"/>-->
+    <!--</root>-->
+
+    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+        <!--<withJansi>true</withJansi>-->
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+            <charset>utf8</charset>
+        </encoder>
+    </appender>
+    <appender name="LogFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${LOG_PATH}/${LOG_FILE}</File>
+        <Append>true</Append>
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+            <charset>utf8</charset>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/%d{yyyyMM}/${LOG_FILE}.%d{yyyyMMdd}</fileNamePattern>
+        </rollingPolicy>
+    </appender>
+    <appender name="ErrorFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${LOG_PATH}/${LOG_ERROR_FILE}</File>
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+            <charset>utf8</charset>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/%d{yyyyMM}/${LOG_ERROR_FILE}.%d{yyyyMMdd}</fileNamePattern>
+        </rollingPolicy>
+    </appender>
+    <appender name="PartnerFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${LOG_PATH}/${PARTNER_FILE}</File>
+        <!--<Append>true</Append>-->
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+            <charset>utf8</charset>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/%d{yyyyMM}/${PARTNER_FILE}.%d{yyyyMMdd}</fileNamePattern>
+        </rollingPolicy>
+    </appender>
+    <appender name="MVC" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${LOG_PATH}/${MVC_FILE}</File>
+        <!--<Append>true</Append>-->
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+            <charset>utf8</charset>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/%d{yyyyMM}/${MVC_FILE}.%d{yyyyMMdd}</fileNamePattern>
+        </rollingPolicy>
+    </appender>
+    <appender name="TRANSF" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${LOG_PATH}/${TRANSF_FILE}</File>
+        <!--<Append>true</Append>-->
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+            <charset>utf8</charset>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/%d{yyyyMM}/${TRANSF_FILE}.%d{yyyyMMdd}</fileNamePattern>
+        </rollingPolicy>
+    </appender>
+    <!--<logger name="org.springframework" level="DEBUG"/>-->
+    <!--<logger name="org.mybatis.spring" level="DEBUG"/>-->
+
+    <!--<logger name="com.netflix" level="INFO"/>-->
+    <!--<logger name="org.apache.zookeeper" level="INFO"/>-->
+    <!--<logger name="org.apache.curator" level="INFO"/>-->
+    <!--<logger name="org.springframework" level="INFO"/>-->
+    <logger name="org.apache" level="INFO"/>
+    <!--<logger name="com.alibaba.druid" level="DEBUG"/>-->
+    <!--<logger name="com.keruyun.commons" level="INFO"/>-->
+    <logger name="com.keruyun.checkout" level="INFO"/>
+    <logger name="PartnerRequest" level="INFO" additivity="false">
+        <appender-ref ref="PartnerFile"/>
+    </logger>
+    <logger name="MVCLOG" level="INFO" additivity="true">
+        <appender-ref ref="MVC"/>
+    </logger>
+    <logger name="TRANSFLOG" level="INFO" additivity="false">
+        <appender-ref ref="TRANSF"/>
+    </logger>
+    <root level="INFO">
+        <appender-ref ref="Console"/>
+        <appender-ref ref="LogFile"/>
+        <appender-ref ref="ErrorFile"/>
+    </root>
+</configuration>
+
